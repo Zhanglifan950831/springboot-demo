@@ -1,0 +1,23 @@
+server:
+  port: 8085
+spring:
+  datasource:
+    name: test
+    url: jdbc:mysql://127.0.0.1:3306/gift_card
+    username: root
+    password: 123456
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: com.mysql.jdbc.Driver
+
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  #实体类所做包
+  type-aliases-package: com.my.*.entity
+
+# 微信公众号的AppId以及AppSecret
+weixin:
+  AppID: wxdc3fa262591941b9
+  AppSecret: d13efbab63878e2cd3d8e84db12fe394
+
+
+

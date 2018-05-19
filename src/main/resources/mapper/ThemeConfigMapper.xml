@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.my.demo.dao.ThemeConfigMapper" >
+  <resultMap id="BaseResultMap" type="com.my.demo.entity.ThemeConfig" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="title" property="title" jdbcType="VARCHAR" />
+    <result column="theme_pic_url" property="themePicUrl" jdbcType="VARCHAR" />
+    <result column="category_id" property="categoryId" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, title, theme_pic_url, category_id
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from theme_config
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from theme_config
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.my.demo.entity.ThemeConfig" >
+    insert into theme_config (id, title, theme_pic_url, 
+      category_id)
+    values (#{id,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, #{themePicUrl,jdbcType=VARCHAR}, 
+      #{categoryId,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.my.demo.entity.ThemeConfig" >
+    insert into theme_config
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="title != null" >
+        title,
+      </if>
+      <if test="themePicUrl != null" >
+        theme_pic_url,
+      </if>
+      <if test="categoryId != null" >
+        category_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="title != null" >
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="themePicUrl != null" >
+        #{themePicUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="categoryId != null" >
+        #{categoryId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.my.demo.entity.ThemeConfig" >
+    update theme_config
+    <set >
+      <if test="title != null" >
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="themePicUrl != null" >
+        theme_pic_url = #{themePicUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="categoryId != null" >
+        category_id = #{categoryId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.my.demo.entity.ThemeConfig" >
+    update theme_config
+    set title = #{title,jdbcType=VARCHAR},
+      theme_pic_url = #{themePicUrl,jdbcType=VARCHAR},
+      category_id = #{categoryId,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <resultMap id="ThemeResultMap" type="com.my.demo.doo.ThemeConfigDo">
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="title" property="title" jdbcType="VARCHAR" />
+    <collection property="priceList" column="id" select="selectPriceList"></collection>
+  </resultMap>
+  <select id="getThemeInfo" resultMap="ThemeResultMap" parameterType="java.lang.Integer">
+    SELECT
+    id,
+    title
+    FROM theme_config
+    WHERE id = #{id}
+  </select>
+  <select id="selectPriceList" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+    SELECT
+    tcpc.price
+    FROM theme_card_price_config tcpc
+    WHERE tcpc.theme_id = #{themeId}
+  </select>
+</mapper>
